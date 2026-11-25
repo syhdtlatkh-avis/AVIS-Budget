@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Budget Malaysia Car Rental | Unbeatable Rates & Nationwide Fleet</title>
+  <meta name="description" content="Official Budget Malaysia Car Rental portal. Quality car hire across 17 stations including KLIA, Penang, Johor Bahru, Kota Kinabalu & Kuching. Book now with zero hidden charges.">
+
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css?v=4.2">
+</head>
+<body>
+
+  <!-- ======================================================================
+       SECTION 1: Header / Navigation (Website Navigation)
+       ====================================================================== -->
+  <header class="header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="Budget Malaysia Home">
+        <img src="assets/images/budget-logo-navy.png" alt="Budget Car Rental" class="brand-logo-img">
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
+        <a class="nav-link active" href="index.html">Home</a>
+        <a class="nav-link" href="fleet.html">Fleet</a>
+        <a class="nav-link" href="reservation.html">Reservation</a>
+        <a class="nav-link" href="locations.html">Locations</a>
+        <a class="nav-link" href="offer.html">Offers & Deals</a>
+        <a class="btn-book" href="reservation.html" style="margin-top: 10px; display: none;">Book a Car ?</a>
+      </nav>
+
+      <!-- Header Actions (Book CTA & Mobile Toggle) -->
+      <div class="header-actions">
+        <a class="btn-book header-cta" href="reservation.html">
+          <span>Book a car</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Open Navigation Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================================================================
+         SECTION 2: Hero Banner Carousel (Promotional Banners)
+         ====================================================================== -->
+    <section class="hero-carousel-section" id="heroCarousel" aria-label="Promotional Banners">
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="carouselTrack">
+          <div class="carousel-slide" data-index="0">
+            <a href="offer.html#petaPoket" class="carousel-slide-link" title="Peta & Poket Budget Malaysia - Deals from RM68 nett/day*">
+              <img src="assets/images/banner-1.jpg" alt="Peta & Poket Ke Mana Saja Pun Boleh - Sewa kereta serendah RM68/sehari" class="carousel-img">
+            </a>
+          </div>
+          <div class="carousel-slide" data-index="1">
+            <a href="reservation.html" class="carousel-slide-link" title="Less OW, More WOW! The Road is Yours. Now Own It.">
+              <img src="assets/images/banner-2.jpg" alt="Less OW, More WOW! The Road is Yours. Now Own It." class="carousel-img">
+            </a>
+          </div>
+          <div class="carousel-slide" data-index="2">
+            <a href="reservation.html" class="carousel-slide-link" title="Affordable Wheels, Endless Roads - Drive the savings you deserve">
+              <img src="assets/images/banner-3.jpg" alt="Affordable Wheels, Endless Roads - Drive the savings you deserve" class="carousel-img">
+            </a>
+          </div>
+        </div>
+
+        <!-- Previous and Next Navigation Arrows -->
+        <button class="carousel-arrow carousel-arrow-prev" id="carouselPrev" aria-label="Previous Slide">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button class="carousel-arrow carousel-arrow-next" id="carouselNext" aria-label="Next Slide">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <!-- Navigation Dots -->
+        <div class="carousel-dots" id="carouselDots" role="tablist" aria-label="Slide indicators">
+          <button class="carousel-dot active" data-slide="0" aria-label="Slide 1" role="tab" aria-selected="true"></button>
+          <button class="carousel-dot" data-slide="1" aria-label="Slide 2" role="tab" aria-selected="false"></button>
+          <button class="carousel-dot" data-slide="2" aria-label="Slide 3" role="tab" aria-selected="false"></button>
+        </div>
+
+        <!-- Promotional Status Badge -->
+        <div class="carousel-badge">
+          <span class="carousel-live-dot"></span>
+          <span>Featured Deals</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 3: Booking Search Widget (Search and Book Rental Cars)
+         ====================================================================== -->
+    <section class="booking-widget-section">
+      <div class="wrap">
+        <div class="booking-widget">
+          <div class="widget-header">
+            <div class="widget-title-wrap">
+              <span class="widget-badge"><i class="fa-solid fa-car-side"></i> FAST & EASY RESERVATION</span>
+              <h3 class="widget-heading">Book Your Rental Car</h3>
+            </div>
+            <div class="widget-perks">
+              <span class="widget-perk-item"><i class="fa-solid fa-circle-check"></i> 100% Guaranteed Exact Model</span>
+              <span class="widget-perk-item"><i class="fa-solid fa-bolt"></i> Instant Confirmation</span>
+              <span class="widget-perk-item"><i class="fa-solid fa-shield-halved"></i> Zero Hidden Fees</span>
+            </div>
+          </div>
+
+          <form id="quickBookingForm" class="widget-form">
+            <div class="form-group">
+              <label for="pickupStationSelect">
+                <i class="fa-solid fa-location-dot"></i> Pick-up Location
+              </label>
+              <select class="form-control station-select" id="pickupStationSelect" name="pickupStation" required>
+                <option value="" selected>Choose pick-up station</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="quickPickupDate">
+                <i class="fa-solid fa-calendar-day"></i> Pick-up Date
+              </label>
+              <input class="form-control" type="date" id="quickPickupDate" name="pickupDate" required>
+            </div>
+
+            <div class="form-group">
+              <label for="quickReturnDate">
+                <i class="fa-solid fa-calendar-check"></i> Return Date
+              </label>
+              <input class="form-control" type="date" id="quickReturnDate" name="returnDate" required>
+            </div>
+
+            <div class="form-group">
+              <label for="quickCategorySelect">
+                <i class="fa-solid fa-sliders"></i> Vehicle Model
+              </label>
+              <select class="form-control" id="quickCategorySelect" name="vehicleCategory">
+                <option value="all">All Available Models (2)</option>
+                <option value="economy">Proton Persona 1.6 (Economy Sedan)</option>
+                <option value="suv">Mitsubishi Xpander (Compact SUV · 7-Seater)</option>
+              </select>
+            </div>
+
+            <button class="btn btn-primary widget-btn" type="submit">
+              <span>Find Cars</span>
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 4: Explore Our Fleet (Showcase Available Vehicles)
+         ====================================================================== -->
+    <section class="fleet-section" id="fleetSection">
+      <div class="wrap">
+        <div class="section-header">
+          <div class="eyebrow">
+            <i class="fa-solid fa-car"></i>
+            <span>EXCLUSIVELY GUARANTEED FLEET</span>
+          </div>
+          <h2 class="section-title">
+            Explore Our <em>Fleet.</em>
+          </h2>
+          <p class="section-desc">
+            Budget Malaysia offers these 2 dedicated models with guaranteed availability. No substitutions, no guesswork &mdash; drive the exact car you reserved.
+          </p>
+        </div>
+
+        <!-- Dynamic Availability & Price Analysis Banner (Populated on "Find Cars") -->
+        <div id="fleetSearchAnalysisBanner" class="search-analysis-container" style="display: none;"></div>
+
+        <!-- Dynamic Car Cards Grid -->
+        <div class="fleet-grid" id="fleetContainer">
+          <!-- Populated dynamically by app.js with full specs & rates -->
+        </div>
+
+        <div style="text-align: center; margin-top: 36px;">
+          <a class="btn btn-secondary btn-lg" href="fleet.html">
+            <span>View Complete Fleet Specifications</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 5: Special Offers & Promotions (Display Discounts and Deals)
+         ====================================================================== -->
+    <section class="offers-section" id="offers">
+      <div class="wrap">
+        <div class="section-header">
+          <div class="eyebrow">
+            <i class="fa-solid fa-tags"></i>
+            <span>PROMOTIONS & PRIVILEGES</span>
+          </div>
+          <h2 class="section-title">
+            Special Offers & <em>Promotions.</em>
+          </h2>
+          <p class="section-desc">
+            Save more on every journey across Malaysia. Check our official Peta &amp; Poket year-end promotional rates, guaranteed vehicles, and holiday perks.
+          </p>
+        </div>
+
+        <!-- Featured Official Campaign: Peta & Poket Budget Malaysia (Referred from Offers & Deals) -->
+        <div class="peta-poket-showcase">
+          <div class="peta-poket-grid">
+            <!-- Left Column: Official Campaign Poster -->
+            <div class="poster-viewer-col">
+              <div class="poster-frame">
+                <span class="poster-badge"><i class="fa-solid fa-certificate"></i> OFFICIAL POSTER</span>
+                <img src="assets/images/peta-poket-poster.jpg?v=2.6" alt="Peta &amp; Poket Budget Malaysia official campaign poster" loading="lazy">
+              </div>
+            </div>
+
+            <!-- Right Column: Campaign Details & Booking Action -->
+            <div class="poster-content-col">
+              <div class="campaign-headline-wrap">
+                <span class="campaign-pill"><i class="fa-solid fa-fire"></i> SPECIAL YEAR-END CAMPAIGN</span>
+                <h3 class="campaign-headline" style="font-size: clamp(22px, 2.3vw, 28px); font-weight: 800; color: var(--navy); line-height: 1.15; margin: 0;">Peta &amp; Poket Budget Malaysia</h3>
+                <span class="tagline-ribbon">KE MANA SAJA PUN BOLEH!</span>
+              </div>
+
+              <p class="campaign-desc">
+                Your map's ready and your pocket's happy. Grab Budget Malaysia deals <strong>from RM68 nett/day*</strong> this year-end and go wherever the fun takes you: balik kampung, a weekend getaway, or that road trip your group chat keeps talking about.
+              </p>
+
+              <!-- Dual Vehicle Rates Highlight -->
+              <div class="campaign-rates-grid">
+                <a href="reservation.html?car=persona&promo=PETAPOKET" class="campaign-rate-card">
+                  <div class="rate-card-cat"><i class="fa-solid fa-car-side"></i> Economy Sedan · 5-Seater</div>
+                  <div class="rate-card-model">Proton Persona 1.6</div>
+                  <div class="rate-card-price">RM 68 <small>/sehari*</small></div>
+                  <span class="rate-card-action">Book Proton Persona <i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+
+                <a href="reservation.html?car=xpander&promo=PETAPOKET" class="campaign-rate-card">
+                  <div class="rate-card-cat"><i class="fa-solid fa-users"></i> Compact SUV · 7-Seater</div>
+                  <div class="rate-card-model">Mitsubishi Xpander</div>
+                  <div class="rate-card-price">RM 138 <small>/sehari*</small></div>
+                  <span class="rate-card-action">Book Mitsubishi Xpander <i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+              </div>
+
+              <!-- Why Rent With Us -->
+              <div>
+                <h4 class="campaign-benefits-title">Why rent with Budget Malaysia?</h4>
+                <ul class="campaign-benefits-list">
+                  <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Pocket-friendly rates for your memorable holidays</span>
+                  </li>
+                  <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Easy pick-up &amp; drop-off at 17 stations nationwide.</span>
+                  </li>
+                  <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Reliable, comfy rides for every journey.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Action CTA Row -->
+              <div class="campaign-actions-row">
+                <a href="reservation.html?promo=PETAPOKET" class="btn btn-primary btn-lg">
+                  <span>GET RENTAL PROMOTION NOW</span>
+                  <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="https://wa.me/60122682847?text=Hi%20Budget%20Malaysia,%20I'd%20like%20to%20enquire%20about%20the%20Peta%20%26%20Poket%20promotion" target="_blank" rel="noopener" class="btn-whatsapp-cta">
+                  <i class="fa-brands fa-whatsapp"></i>
+                  <span>WhatsApp Concierge</span>
+                </a>
+              </div>
+
+              <div class="campaign-meta-footer">
+                <span><i class="fa-solid fa-calendar-check"></i> Promotion valid till <strong>31st December 2026</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 16px;">
+          <a class="btn btn-secondary" href="offer.html">
+            <span>Explore All Campaign Details &amp; Travel Inspirations</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 6: Why Choose Budget? (Highlight Company Benefits)
+         ====================================================================== -->
+    <section class="features-section" id="whyChoose">
+      <div class="wrap">
+        <div class="section-header text-center">
+          <div class="eyebrow">
+            <i class="fa-solid fa-star"></i>
+            <span>THE BUDGET MALAYSIA ADVANTAGE</span>
+          </div>
+          <h2 class="section-title">
+            Why Choose <em>Budget?</em>
+          </h2>
+          <p class="section-desc">
+            As an authorized brand of DRB-HICOM EZ-Drive and EON Berhad, we pair world-class international standards with deep Malaysian local expertise.
+          </p>
+        </div>
+
+        <div class="why-choose-grid">
+          <!-- Card 1: Best Value -->
+          <div class="why-choose-card">
+            <div class="why-choose-img-wrap">
+              <img src="assets/images/why-choose-best-value.jpg" alt="Best Value - Unbeatable rates without the hassle" loading="lazy">
+            </div>
+            <div class="why-choose-body">
+              <h3 class="why-choose-title">Best Value</h3>
+              <p class="why-choose-desc">Unbeatable rates without the hassle</p>
+            </div>
+          </div>
+
+          <!-- Card 2: Convenient Locations -->
+          <div class="why-choose-card">
+            <div class="why-choose-img-wrap">
+              <img src="assets/images/why-choose-locations.jpg" alt="Convenient Locations - Pick up at airports, cities, and major hubs across Malaysia" loading="lazy">
+            </div>
+            <div class="why-choose-body">
+              <h3 class="why-choose-title">Convenient Locations</h3>
+              <p class="why-choose-desc">Pick up at airports, cities, and major hubs across Malaysia.</p>
+            </div>
+          </div>
+
+          <!-- Card 3: 24/7 Roadside Assistance -->
+          <div class="why-choose-card">
+            <div class="why-choose-img-wrap">
+              <img src="assets/images/why-choose-roadside.jpg" alt="24/7 Roadside Assistance - Enjoy peace of mind with our breakdown support" loading="lazy">
+            </div>
+            <div class="why-choose-body">
+              <h3 class="why-choose-title">24/7 Roadside Assistance</h3>
+              <p class="why-choose-desc">Enjoy peace of mind with our breakdown support</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 7: About Budget
+         ====================================================================== -->
+    <section class="about-explorers-section">
+      <div class="wrap">
+        <div class="about-explorers-grid">
+          <div class="about-explorers-text">
+            <div class="eyebrow">
+              <i class="fa-solid fa-circle-info"></i>
+              <span>ABOUT US · BRAND HERITAGE</span>
+            </div>
+            <h2 style="color: var(--burnt-orange);">About Budget</h2>
+            <p>
+              Welcome to Budget Rent A Car (also known as Budget Malaysia)! As a proud member of the AVIS-BUDGET Group, we bring you the same exceptional service quality you've come to trust, now at more affordable prices. Our mission is to provide budget-friendly, reliable, and convenient car rental solutions without compromising on quality. Whether you're travelling for business or leisure, BUDGET offers a wide range of well-maintained vehicles to suit your needs. Enjoy seamless travel experiences with our easy booking process, flexible rental options, and customer-centric approach. Discover the perfect blend of value and excellence with Budget  Malaysia.
+            </p>
+            <p>
+              Explore Malaysia on wheels with Budget Malaysia, you can find us in 17 rental locations  across the country. For work or leisure, we provide customers a wide range of professional mobility services and solutions specialising in vehicle rental, and fleet management services for both individuals and businesses. Budget Malaysia also offers commercial vehicles for leasing, giving you the power to do more without burning a hole in your pocket.
+            </p>
+            <p style="font-style: italic; color: var(--navy); margin-top: 12px;">
+              Budget Malaysia is <strong>a subsidiary of EON Berhad</strong>, and <strong>a member of the DRB-HICOM Group</strong> respectively.
+            </p>
+            <div style="display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap;">
+              <a class="btn btn-primary" href="fleet.html">
+                <span>Browse Our Fleet</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <a class="btn btn-secondary" href="locations.html">
+                <span>View All Branches</span>
+                <i class="fa-solid fa-location-dot"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="about-stats-grid">
+            <div class="about-stat-card">
+              <div class="about-stat-num">48</div>
+              <div class="about-stat-label">Fleet Vehicles</div>
+              <p class="about-stat-desc">Vehicles available for rental</p>
+            </div>
+
+            <div class="about-stat-card">
+              <div class="about-stat-num">17</div>
+              <div class="about-stat-label">Rental Locations</div>
+              <p class="about-stat-desc">Convenient locations nationwide</p>
+            </div>
+
+            <div class="about-stat-card">
+              <div class="about-stat-num">2</div>
+              <div class="about-stat-label">Vehicle Models</div>
+              <p class="about-stat-desc">Reliable vehicles for your journey</p>
+            </div>
+
+            <div class="about-stat-card">
+              <div class="about-stat-num">98.4%</div>
+              <div class="about-stat-label">Satisfaction Rate</div>
+              <p class="about-stat-desc">Rated by our valued customers</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 8: Who We Serve · Our Customers (Showcase Customer Personas)
+         ====================================================================== -->
+    <section class="who-we-serve-section">
+      <div class="wrap">
+        <div class="section-header text-center">
+          <div class="eyebrow">
+            <i class="fa-solid fa-compass"></i>
+            <span>CALLING ALL EXPLORERS · OUR CUSTOMERS</span>
+          </div>
+          <h2 class="section-title">
+            Who We Serve. <em>Our Customers.</em>
+          </h2>
+          <p class="section-desc">
+            People don't just come to us for great value. They choose Budget because we understand what's important to them. Searching for a quality car without the premium price tag is easy &mdash; because enjoying the world shouldn't cost the earth.
+          </p>
+        </div>
+
+        <div class="personas-grid">
+          <!-- Persona 1: Social -->
+          <article class="persona-card">
+            <div>
+              <div class="persona-img-wrap">
+                <img src="assets/images/customer-social.jpg?v=3.4" alt="Social customer persona - group adventures" loading="lazy">
+                <span class="persona-img-badge badge-orange">Social</span>
+              </div>
+              <h3 class="persona-title">Social</h3>
+              <p class="persona-desc">
+                They're <strong>savvy</strong> and like getting their money's worth. When heading out for group adventures and celebrations, a good deal gives them a great buzz.
+              </p>
+            </div>
+            <div>
+              <div class="persona-recommended">
+                <span>Recommended Vehicle:</span>
+                <strong>Mitsubishi Xpander (Compact SUV · 7-Seater)</strong>
+              </div>
+              <a class="btn btn-secondary btn-full btn-sm" href="reservation.html?car=xpander&category=suv">Rent for Group ?</a>
+            </div>
+          </article>
+
+          <!-- Persona 2: Savvy -->
+          <article class="persona-card">
+            <div>
+              <div class="persona-img-wrap">
+                <img src="assets/images/customer-savvy.jpg?v=3.4" alt="Savvy customer persona - smart value" loading="lazy">
+                <span class="persona-img-badge badge-navy">Savvy</span>
+              </div>
+              <h3 class="persona-title">Savvy</h3>
+              <p class="persona-desc">
+                They're <strong>savvy</strong> and value-conscious. They look for reliable, high-quality car rentals with upfront pricing and zero unnecessary extras.
+              </p>
+            </div>
+            <div>
+              <div class="persona-recommended">
+                <span>Recommended Vehicle:</span>
+                <strong>Proton Persona 1.6 (Economy Sedan)</strong>
+              </div>
+              <a class="btn btn-secondary btn-full btn-sm" href="reservation.html?car=persona&category=economy">Rent Savvy ?</a>
+            </div>
+          </article>
+
+          <!-- Persona 3: Experiential -->
+          <article class="persona-card">
+            <div>
+              <div class="persona-img-wrap">
+                <img src="assets/images/customer-experiential.jpg?v=3.4" alt="Experiential customer persona - making memories" loading="lazy">
+                <span class="persona-img-badge badge-orange">Experiential</span>
+              </div>
+              <h3 class="persona-title">Experiential</h3>
+              <p class="persona-desc">
+                They believe that life is for living and there's no time like the present. They <strong>make warm memories</strong>, not just cold investments.
+              </p>
+            </div>
+            <div>
+              <div class="persona-recommended">
+                <span>Recommended Vehicle:</span>
+                <strong>Mitsubishi Xpander (Compact SUV)</strong>
+              </div>
+              <a class="btn btn-secondary btn-full btn-sm" href="reservation.html?car=xpander&category=suv">Explore Adventures ?</a>
+            </div>
+          </article>
+
+          <!-- Persona 4: Straightforward -->
+          <article class="persona-card">
+            <div>
+              <div class="persona-img-wrap">
+                <img src="assets/images/customer-straightforward.jpg?v=3.4" alt="Straightforward customer persona - simple needs" loading="lazy">
+                <span class="persona-img-badge badge-navy">Straightforward</span>
+              </div>
+              <h3 class="persona-title">Straightforward</h3>
+              <p class="persona-desc">
+                They are straightforward and have simple needs. No hassle and no waiting, thanks very much. If it's easy, fun, and reliable, they're ready to go.
+              </p>
+            </div>
+            <div>
+              <div class="persona-recommended">
+                <span>Recommended Vehicle:</span>
+                <strong>Proton Persona 1.6 (Economy Sedan)</strong>
+              </div>
+              <a class="btn btn-secondary btn-full btn-sm" href="reservation.html?car=persona&category=economy">Quick Reservation ?</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 9: Rental Locations (Display Branches and Locations)
+         ====================================================================== -->
+    <section class="home-locations-section">
+      <div class="wrap">
+        <div class="home-locations-grid">
+          <div>
+            <div class="eyebrow">
+              <i class="fa-solid fa-map-pin"></i>
+              <span>17 STATIONS NATIONWIDE</span>
+            </div>
+            <h2 class="section-title">
+              Our Rental <em>Locations.</em>
+            </h2>
+            <p class="section-desc">
+              Pick up and return your rental car effortlessly at major airport arrival halls and downtown hubs across Peninsular Malaysia, Sabah, and Sarawak.
+            </p>
+
+            <div class="home-stations-list" id="homeStationsList">
+              <a class="home-station-chip" data-id="klia-t1" href="locations.html?station=klia-t1">
+                <i class="fa-solid fa-plane"></i>
+                <span>KLIA Terminal 1 (KLIA T1)</span>
+              </a>
+              <a class="home-station-chip" data-id="klia-t2" href="locations.html?station=klia-t2">
+                <i class="fa-solid fa-plane"></i>
+                <span>KLIA Terminal 2 (KLIA T2)</span>
+              </a>
+              <a class="home-station-chip" data-id="glenmarie-hq" href="locations.html?station=glenmarie-hq">
+                <i class="fa-solid fa-building"></i>
+                <span>Glenmarie HQ (TE5)</span>
+              </a>
+              <a class="home-station-chip" data-id="kl-downtown" href="locations.html?station=kl-downtown">
+                <i class="fa-solid fa-city"></i>
+                <span>KL Downtown (KU4)</span>
+              </a>
+              <a class="home-station-chip" data-id="penang-airport" href="locations.html?station=penang-airport">
+                <i class="fa-solid fa-plane"></i>
+                <span>Penang Airport (PEN)</span>
+              </a>
+              <a class="home-station-chip" data-id="senai-airport" href="locations.html?station=senai-airport">
+                <i class="fa-solid fa-plane"></i>
+                <span>Senai Airport (JHB)</span>
+              </a>
+              <a class="home-station-chip" data-id="jb-downtown" href="locations.html?station=jb-downtown">
+                <i class="fa-solid fa-building"></i>
+                <span>Johor Bahru Downtown (JH2)</span>
+              </a>
+              <a class="home-station-chip" data-id="melaka-downtown" href="locations.html?station=melaka-downtown">
+                <i class="fa-solid fa-city"></i>
+                <span>Melaka Downtown (M8Y)</span>
+              </a>
+              <a class="home-station-chip" data-id="kuantan-airport" href="locations.html?station=kuantan-airport">
+                <i class="fa-solid fa-plane"></i>
+                <span>Kuantan Airport (KUA)</span>
+              </a>
+              <a class="home-station-chip" data-id="kota-bharu-airport" href="locations.html?station=kota-bharu-airport">
+                <i class="fa-solid fa-plane"></i>
+                <span>Kota Bharu Airport (KBR)</span>
+              </a>
+              <a class="home-station-chip" data-id="kk-airport" href="locations.html?station=kk-airport">
+                <i class="fa-solid fa-plane"></i>
+                <span>Kota Kinabalu (SG1)</span>
+              </a>
+              <a class="home-station-chip" data-id="sandakan-airport" href="locations.html?station=sandakan-airport">
+                <i class="fa-solid fa-plane"></i>
+                <span>Sandakan Airport (SDK)</span>
+              </a>
+              <a class="home-station-chip" data-id="tawau-airport" href="locations.html?station=tawau-airport">
+                <i class="fa-solid fa-plane"></i>
+                <span>Tawau Airport (TWA)</span>
+              </a>
+              <a class="home-station-chip" data-id="kuching-airport" href="locations.html?station=kuching-airport">
+                <i class="fa-solid fa-plane"></i>
+                <span>Kuching Airport (KCH)</span>
+              </a>
+              <a class="home-station-chip" data-id="miri-airport" href="locations.html?station=miri-airport">
+                <i class="fa-solid fa-plane"></i>
+                <span>Miri Airport (MRR)</span>
+              </a>
+              <a class="home-station-chip" data-id="bintulu-airport" href="locations.html?station=bintulu-airport">
+                <i class="fa-solid fa-plane"></i>
+                <span>Bintulu Airport (BTL)</span>
+              </a>
+              <a class="home-station-chip" data-id="sibu-airport" href="locations.html?station=sibu-airport">
+                <i class="fa-solid fa-plane"></i>
+                <span>Sibu Airport (SBW)</span>
+              </a>
+            </div>
+
+            <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+              <a class="btn btn-primary" href="locations.html">
+                <span>View All Branches & Operating Hours</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <a class="btn btn-secondary" href="reservation.html">
+                <span>Reserve Pickup Point</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Interactive Leaflet Map Box -->
+          <div class="map-container-box">
+            <div id="locationsMap" style="height: 420px;"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 11px; color: var(--text-muted);">
+              <span><i class="fa-solid fa-circle-info" style="color: var(--golden-orange);"></i> Tap any marker to view station details & start a booking.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 10: FAQ (Answer Common Questions)
+         ====================================================================== -->
+    <section class="faq-section">
+      <div class="wrap">
+        <div class="section-header text-center">
+          <div class="eyebrow">
+            <i class="fa-solid fa-circle-question"></i>
+            <span>FREQUENTLY ASKED QUESTIONS</span>
+          </div>
+          <h2 class="section-title">
+            Everything You Need <em>to Know Before You Drive.</em>
+          </h2>
+          <p class="section-desc">Got questions about car rental requirements, insurance, or cross-state drop-offs in Malaysia? We're here to help.</p>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What is the minimum age and licence requirement to rent a vehicle?</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>You must be <strong>at least 21 years old</strong> and have held a full, <strong>valid driving licence for at least one year</strong> at the start of rental.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>How much is the pre-authorisation or security deposit?</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>The amount of the pre-authorisation or security deposit is either fixed - or calculated based on: </p>
+                    <ul>
+                      <li>The estimated vehicle rental price.</li>
+                      <li>Less any amount we accept you have paid towards the rental when you booked - for example, the cost of any accepted voucher.</li>
+                      <li>Plus, the excess fees based on the vehicles group.</li>
+                    </ul>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>Can I return my rental car to a different location?</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>Yes, you may return your vehicle to a different Budget location. However, a one-way fee may apply depending on the stations involved.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What document do I need to rent a car?</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>You will need:</p>
+              <ul>
+                <li>The estimated vehicle rental price.</li>
+                <li>International Driving License / Permit.</li>
+                <li>A valid credit card in the rentar's name.</li>
+                <li> Passport/ID for verification.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-view-more-wrap">
+          <a href="faq.html" class="btn-faq-more" id="faqViewMoreBtn">
+            <span>View More FAQs</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================
+       SECTION 11: Footer (Company Information and Links)
+       ====================================================================== -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="index.html" aria-label="Budget Malaysia Home">
+            <img src="assets/images/budget-logo-navy.png" alt="Budget Car Rental" class="brand-logo-img">
+          </a>
+          <p>
+            DRB-HICOM EZ-Drive Sdn. Bhd. | Company No.:197201001192 (12799-K)
+          </p>
+          <div class="footer-contact-info">
+            <div><i class="fa-solid fa-building"></i> Level 2, EON Head Office Complex, No 2, Persiaran Kerjaya, Glenmarie Industrial Park, Section U1, 40150 Shah Alam, Selangor Darul Ehsan</div>
+            <div><i class="fa-solid fa-phone"></i> Central Reservations: <a href="tel:+60378031122">+603-7803 1122</a></div>
+            <div><i class="fa-solid fa-envelope"></i> Email: <a href="mailto:glenmarie@budgetmalaysia.com.my">glenmarie@budgetmalaysia.com.my</a></div>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <div class="footer-links">
+            <a href="terms.html">Terms &amp; Condition</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="faq.html">Frequently Asked Questions (FAQ)</a>
+            <a href="contact.html">Contact Us</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Promotions &amp; Updates</h4>
+          <p style="font-size: 12px; color: #CBD5E1; margin-bottom: 12px;">Subscribe to receive exclusive weekend promo codes and holiday deals:</p>
+          <form class="newsletter-box" onsubmit="event.preventDefault(); showToast('Thank you for subscribing to Budget Malaysia!');"> 
+            <input type="email" placeholder="Your email address" required>
+            <button type="submit">Join</button>
+          </form>
+        </div>
+      </div>
+            <div class="footer-bottom">
+        <p class="footer-disclaimer">
+          &copy; <span id="year"></span> Budget Malaysia (DRB-HICOM EZ-Drive Sdn. Bhd.).
+        </p>
+        <div style="display: flex; gap: 16px; font-size: 12px;">
+          <a href="#" style="color: #CBD5E1;">Privacy Policy</a>
+          <a href="#" style="color: #CBD5E1;">Rental Terms</a>
+          <a href="#" style="color: #CBD5E1;">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 360&deg; Virtual Showroom Modal -->
+  <div class="showroom-modal" id="showroomModal">
+    <div class="showroom-backdrop" id="showroomBackdrop"></div>
+    <div class="showroom-dialog">
+      <!-- Header -->
+      <div class="showroom-header">
+        <div class="showroom-header-left">
+          <h2 class="showroom-car-title" id="showroomTitle">Proton Persona 1.6</h2>
+          <span class="showroom-car-class" id="showroomClass">Economy Sedan</span>
+        </div>
+        <div class="showroom-header-tabs">
+          <button class="showroom-tab active" data-view="exterior">Exterior</button>
+          <button class="showroom-tab" data-view="interior">Interior</button>
+        </div>
+        <div class="showroom-header-right">
+          <div class="showroom-price" id="showroomPrice">
+            <span class="showroom-price-label">Daily Rate</span>
+            <span class="showroom-price-val">RM 145.26 <small>/ day</small></span>
+          </div>
+          <button class="showroom-close-btn" id="showroomClose" aria-label="Close showroom">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="showroom-body">
+        <!-- Stage -->
+        <div class="showroom-stage">
+          <!-- Studio Spotlight -->
+          <div class="stage-lighting"></div>
+
+          <!-- Orbit Rings -->
+          <div class="turntable-orbit-rings">
+            <div class="orbit-ring ring-outer"></div>
+            <div class="orbit-ring ring-mid"></div>
+            <div class="orbit-ring ring-inner"></div>
+          </div>
+
+          <!-- Left Nodes -->
+          <div class="orbit-nodes-col nodes-left">
+            <button class="orbit-node-btn" data-node="features">
+              <span class="node-icon"><i class="fa-solid fa-star"></i></span>
+              <span class="node-label">Features</span>
+            </button>
+            <button class="orbit-node-btn" data-node="specifications">
+              <span class="node-icon"><i class="fa-solid fa-list-check"></i></span>
+              <span class="node-label">Specifications</span>
+            </button>
+            <button class="orbit-node-btn" data-node="accessories">
+              <span class="node-icon"><i class="fa-solid fa-puzzle-piece"></i></span>
+              <span class="node-label">Accessories</span>
+            </button>
+          </div>
+
+          <!-- Center Vehicle Turntable -->
+          <div class="turntable-vehicle-container">
+            <div class="vehicle-turntable" id="vehicleTurntable">
+              <div class="car-3d-wrap" id="car3dWrap">
+                <img class="car-3d-img" id="car3dImg" src="assets/images/proton-persona.png" alt="360 View" draggable="false">
+              </div>
+              <div class="car-shadow"></div>
+            </div>
+            <!-- Interior View (hidden by default) -->
+            <div class="interior-view" id="interiorView" style="display:none">
+              <div class="interior-placeholder">
+                <i class="fa-solid fa-car-side" style="font-size:48px; color:#F78B00; margin-bottom:16px"></i>
+                <h3 style="color:#fff; margin-bottom:8px">Interior View</h3>
+                <p style="color:#94a3b8; font-size:14px">360&deg; interior experience coming soon.<br>Contact us for in-person viewing at any Budget station.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Nodes -->
+          <div class="orbit-nodes-col nodes-right">
+            <button class="orbit-node-btn" data-node="reviews">
+              <span class="node-icon"><i class="fa-solid fa-star-half-stroke"></i></span>
+              <span class="node-label">Reviews</span>
+            </button>
+            <button class="orbit-node-btn" data-node="safety">
+              <span class="node-icon"><i class="fa-solid fa-shield-halved"></i></span>
+              <span class="node-label">Safety</span>
+            </button>
+            <button class="orbit-node-btn" data-node="warranty">
+              <span class="node-icon"><i class="fa-solid fa-certificate"></i></span>
+              <span class="node-label">Warranty</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hotspot HUD Card (shown on node click) -->
+        <div class="hotspot-hud-card" id="hotspotHud" style="display:none">
+          <div class="hud-card-header">
+            <h4 class="hud-card-title" id="hudTitle">Features</h4>
+            <button class="hud-card-close" id="hudClose"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="hud-card-body" id="hudBody">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="showroom-controls-bar">
+          <button class="scrubber-btn" id="scrubPrev" title="Rotate Left">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="rotation-slider-wrap">
+            <input type="range" class="rotation-slider" id="rotationSlider" min="0" max="360" value="0">
+            <span class="rotation-degree" id="rotationDegree">0&deg;</span>
+          </div>
+          <button class="scrubber-btn" id="scrubNext" title="Rotate Right">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+          <button class="auto-spin-btn" id="autoSpinBtn" title="Toggle Auto-Spin">
+            <i class="fa-solid fa-rotate"></i>
+            <span>Auto</span>
+          </button>
+          <div class="car-360-badge-indicator">
+            <i class="fa-solid fa-cube"></i> 360&deg; View
+          </div>
+          <a href="reservation.html" class="btn btn-primary btn-sm showroom-book-btn" id="showroomBookBtn">
+            BOOK NOW <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="assets/js/app.js?v=4.2"></script>
+</body>
+</html>

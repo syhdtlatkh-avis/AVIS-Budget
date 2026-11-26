@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rental Locations in Malaysia | Budget Malaysia Car Rental</title>
+  <meta name="description" content="Find all 17 Budget Malaysia car rental stations nationwide across KLIA, Penang, Johor Bahru, Kota Kinabalu, and Kuching. View operating hours, phone numbers, and interactive map.">
+
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet CSS for interactive map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css?v=4.2">
+</head>
+<body>
+
+  <!-- Sticky Navigation Header -->
+  <header class="header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="Budget Malaysia Home">
+        <img src="assets/images/budget-logo-navy.png" alt="Budget Car Rental" class="brand-logo-img">
+      </a>
+
+      <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="fleet.html">Fleet</a>
+        <a class="nav-link" href="reservation.html">Reservation</a>
+        <a class="nav-link active" href="locations.html">Locations</a>
+        <a class="nav-link" href="offer.html">Offers & Deals</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn-book header-cta" href="reservation.html">
+          <span>Book a car</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Open Navigation Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="locations-section">
+      <div class="wrap">
+        <div class="section-header">
+          <div class="eyebrow">
+            <i class="fa-solid fa-map-pin"></i>
+            <span>17 STATIONS NATIONWIDE</span>
+          </div>
+          <h1 class="section-title">
+            Closer to Your <em>Journey Across Malaysia.</em>
+          </h1>
+          <p class="section-desc">
+            Pick up your rental vehicle directly upon arrival at major international airport terminals or convenient downtown city centers.
+          </p>
+        </div>
+
+        <div class="locations-layout">
+          <!-- Left: Station Search, Filters & Cards List -->
+          <div>
+            <div class="loc-search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input class="form-control" type="text" id="locationSearchInput" placeholder="Search by city, airport, or station name...">
+            </div>
+
+            <!-- Region Filter Pills -->
+            <div class="loc-region-filters">
+              <button class="loc-region-btn active" data-region="all">All Stations (17)</button>
+              <button class="loc-region-btn" data-region="central">Central & KL (4)</button>
+              <button class="loc-region-btn" data-region="northern">Northern (1)</button>
+              <button class="loc-region-btn" data-region="southern">Southern (3)</button>
+              <button class="loc-region-btn" data-region="eastcoast">East Coast (2)</button>
+              <button class="loc-region-btn" data-region="borneo">East Malaysia (7)</button>
+            </div>
+
+            <!-- Scrollable Stations List -->
+            <div class="loc-cards-scroll" id="locationsList">
+              <!-- Populated dynamically by app.js -->
+            </div>
+          </div>
+
+          <!-- Right: Interactive Leaflet Map Box (Sticky) -->
+          <div class="map-container-box">
+            <div id="locationsMap"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 11px; color: var(--text-muted);">
+              <span><i class="fa-solid fa-circle-info" style="color: var(--primary-amber);"></i> Click any station on the left or tap a map marker to view operating hours & direct booking.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Station Services Banner -->
+        <div style="margin-top: 60px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 24px;">
+            <div style="font-size: 20px; color: var(--primary-orange); margin-bottom: 12px;"><i class="fa-solid fa-plane-arrival"></i></div>
+            <h4 style="font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">Airport Terminal Handover</h4>
+            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">Our airport service counters operate extended and 24-hour schedules with direct parking lot vehicle handovers at KLIA T1, T2, Penang, KKIA, and Kuching.</p>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 24px;">
+            <div style="font-size: 20px; color: var(--primary-orange); margin-bottom: 12px;"><i class="fa-solid fa-key"></i></div>
+            <h4 style="font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">After-Hours Key Drop Boxes</h4>
+            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">Catching an early morning flight? Secure after-hours drop boxes allow hassle-free vehicle return outside standard operating hours.</p>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 24px;">
+            <div style="font-size: 20px; color: var(--primary-orange); margin-bottom: 12px;"><i class="fa-solid fa-arrows-split-up-and-left"></i></div>
+            <h4 style="font-size: 16px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">One-Way Rental Flexibility</h4>
+            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">Pick up in Kuala Lumpur and return at Penang or Johor Bahru. Seamless inter-city routing across Peninsular Malaysia.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="index.html" aria-label="Budget Malaysia Home">
+            <img src="assets/images/budget-logo-navy.png" alt="Budget Car Rental" class="brand-logo-img">
+          </a>
+          <p>DRB-HICOM EZ-Drive Sdn. Bhd. | Company No.:197201001192 (12799-K)</p>
+          <div class="footer-contact-info">
+            <div><i class="fa-solid fa-building"></i> Level 2, EON Head Office Complex, No 2, Persiaran Kerjaya, Glenmarie Industrial Park, Section U1, 40150 Shah Alam, Selangor Darul Ehsan</div>
+            <div><i class="fa-solid fa-phone"></i> Central Reservations: <a href="tel:+60378031122">+603-7803 1122</a></div>
+            <div><i class="fa-solid fa-envelope"></i> Email: <a href="mailto:glenmarie@budgetmalaysia.com.my">glenmarie@budgetmalaysia.com.my</a></div>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <div class="footer-links">
+            <a href="terms.html">Terms &amp; Condition</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="faq.html">Frequently Asked Questions (FAQ)</a>
+            <a href="contact.html">Contact Us</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Promotions &amp; Updates</h4>
+          <p style="font-size: 12px; color: #CBD5E1; margin-bottom: 12px;">Subscribe to receive exclusive weekend promo codes and holiday deals:</p>
+          <form class="newsletter-box" onsubmit="event.preventDefault(); showToast('Thank you for subscribing to Budget Malaysia!');"> 
+            <input type="email" placeholder="Your email address" required>
+            <button type="submit">Join</button>
+          </form>
+        </div>
+      </div>
+            <div class="footer-bottom">
+        <p class="footer-disclaimer">&copy; <span id="year"></span> Budget Malaysia (DRB-HICOM EZ-Drive Sdn. Bhd.).</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS & App JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="assets/js/app.js?v=4.2"></script>
+</body>
+</html>

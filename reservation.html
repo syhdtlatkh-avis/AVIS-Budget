@@ -1,0 +1,1142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Make a Reservation | Budget Malaysia Car Rental</title>
+  <meta name="description" content="Reserve your vehicle with Budget Malaysia. Select pickup location, dates, car model, and complete your booking in 4 easy steps.">
+
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css?v=4.2">
+</head>
+<body class="reservation-page">
+
+  <!-- ======================================================================
+       Header
+       ====================================================================== -->
+  <header class="header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html" aria-label="Budget Malaysia Home">
+        <img src="assets/images/budget-logo-navy.png" alt="Budget Car Rental" class="brand-logo-img">
+      </a>
+      <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="fleet.html">Fleet</a>
+        <a class="nav-link active" href="reservation.html">Reservation</a>
+        <a class="nav-link" href="locations.html">Locations</a>
+        <a class="nav-link" href="offer.html">Offers &amp; Deals</a>
+        <a class="btn-book" href="reservation.html" style="margin-top:10px;display:none;">Book a Car &#8599;</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn-book header-cta" href="fleet.html">
+          <span>View Car</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Open Navigation Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="res-page">
+
+    <!-- -- Step Progress Bar ------------------------ -->
+    <div class="res-steps-bar">
+      <div class="res-steps-inner">
+        <div class="res-step active" id="resStep1">
+          <div class="res-step-num">1</div>
+          <div class="res-step-label"><b>Date &amp; Location</b></div>
+        </div>
+        <div class="res-step" id="resStep2">
+          <div class="res-step-num">2</div>
+          <div class="res-step-label"><b>Search for Car</b></div>
+        </div>
+        <div class="res-step" id="resStep3">
+          <div class="res-step-num">3</div>
+          <div class="res-step-label"><b>Driver Details</b></div>
+        </div>
+        <div class="res-step" id="resStep4">
+          <div class="res-step-num">4</div>
+          <div class="res-step-label"><b>Booking Summary</b></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- -- Page Layout ---------------------------- -->
+    <div class="res-wrap">
+
+      
+
+      <!-- LEFT: Booking Details Sidebar (Steps 2 & 3) -->
+      <aside class="res-sidebar" id="resSidebar" style="display:none;">
+        <div class="res-sidebar-box">
+          <h3 class="res-sidebar-title">Booking details</h3>
+
+          <div class="res-sidebar-section">
+            <div class="res-sidebar-label">PICKUP LOCATION</div>
+            <div class="res-sidebar-value" id="sbPickup">&mdash;</div>
+          </div>
+
+          <div class="res-sidebar-section">
+            <div class="res-sidebar-label">PICKUP DATE, TIME</div>
+            <div class="res-sidebar-value" id="sbPickupDT">&mdash;</div>
+          </div>
+
+          <div class="res-sidebar-section">
+            <div class="res-sidebar-label">RETURN LOCATION</div>
+            <div class="res-sidebar-value" id="sbReturn">&mdash;</div>
+          </div>
+
+          <div class="res-sidebar-section">
+            <div class="res-sidebar-label">RETURN DATE, TIME</div>
+            <div class="res-sidebar-value" id="sbReturnDT">&mdash;</div>
+          </div>
+
+          <div class="res-sidebar-section">
+            <div class="res-sidebar-label">RENTAL PERIOD</div>
+            <div class="res-sidebar-value" id="sbDays">&mdash;</div>
+          </div>
+
+          <div class="res-sidebar-pricing">
+            <div class="res-sidebar-price-row" id="sbVehicleRow">
+              <span id="sbVehicle">Selected vehicle</span>
+              <span id="sbVehiclePrice">RM 0.00</span>
+            </div>
+            <div class="res-sidebar-price-row">
+              <span>Tax</span>
+              <span id="sbTaxPrice">RM 0.00</span>
+            </div>
+          </div>
+
+          <div class="res-sidebar-total">
+            <span>Total</span>
+            <span class="total-val" id="sbTotal">RM 0.00</span>
+          </div>
+        </div>
+      </aside>
+      <!-- Main Content -->
+      <div class="res-main">
+
+        <!-- ------------------------------------------
+             STEP 1: Date & Location
+             ------------------------------------------ -->
+        <div class="res-panel active" id="resPanel1">
+          <div class="res-step1-layout">
+
+            <!-- Left: Booking Form -->
+            <div class="res-step1-form">
+
+                <!-- PICKUP -->
+                <div class="res-section-box">
+                  <div class="res-section-badge">Pickup</div>
+                  <div class="res-field">
+                    <span class="res-field-label">Pickup Location</span>
+                    <select id="wizPickup" required>
+                      <option value="">-- Select pick-up station --</option>
+                      <option>Glenmarie, Shah Alam (TE5)</option>
+                      <option>Kuala Lumpur International Airport Terminal 1 (KLIA T1)</option>
+                      <option>Kuala Lumpur International Airport Terminal 2 (KLIA T2)</option>
+                      <option>Kuala Lumpur Downtown (KU4)</option>
+                      <option>Penang International Airport (PEN)</option>
+                      <option>Senai International Airport (JHB)</option>
+                      <option>Johor Bahru Downtown (JH2)</option>
+                      <option>Melaka Downtown (M8Y)</option>
+                      <option>Kuantan Airport (KUA)</option>
+                      <option>Kota Bharu Airport (KBR)</option>
+                      <option>Kota Kinabalu International Airport (SG1)</option>
+                      <option>Sandakan Airport (SDK)</option>
+                      <option>Tawau Airport (TWA)</option>
+                      <option>Kuching International Airport (KCH)</option>
+                      <option>Miri Airport (MRR)</option>
+                      <option>Bintulu Airport (BTL)</option>
+                      <option>Sibu Airport (SBW)</option>
+                    </select>
+                  </div>
+                  <div class="res-date-row">
+                    <div class="res-field">
+                      <span class="res-field-label">Pickup Date</span>
+                      <input type="date" id="wizPickupDate" required>
+                    </div>
+                    <div class="res-field">
+                      <span class="res-field-label">Pickup Time</span>
+                      <input type="time" id="wizPickupTime" value="10:00" required>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- RETURN -->
+                <div class="res-section-box">
+                  <div class="res-section-badge">Return</div>
+                  <div class="res-field">
+                    <span class="res-field-label">Return Location</span>
+                    <select id="wizReturn" required>
+                      <option value="">-- Same as pick-up --</option>
+                      <option>Glenmarie, Shah Alam (TE5)</option>
+                      <option>Kuala Lumpur International Airport Terminal 1 (KLIA T1)</option>
+                      <option>Kuala Lumpur International Airport Terminal 2 (KLIA T2)</option>
+                      <option>Kuala Lumpur Downtown (KU4)</option>
+                      <option>Penang International Airport (PEN)</option>
+                      <option>Senai International Airport (JHB)</option>
+                      <option>Johor Bahru Downtown (JH2)</option>
+                      <option>Melaka Downtown (M8Y)</option>
+                      <option>Kuantan Airport (KUA)</option>
+                      <option>Kota Bharu Airport (KBR)</option>
+                      <option>Kota Kinabalu International Airport (SG1)</option>
+                      <option>Sandakan Airport (SDK)</option>
+                      <option>Tawau Airport (TWA)</option>
+                      <option>Kuching International Airport (KCH)</option>
+                      <option>Miri Airport (MRR)</option>
+                      <option>Bintulu Airport (BTL)</option>
+                      <option>Sibu Airport (SBW)</option>
+                    </select>
+                  </div>
+                  <div class="res-date-row">
+                    <div class="res-field">
+                      <span class="res-field-label">Return Date</span>
+                      <input type="date" id="wizReturnDate" required>
+                    </div>
+                    <div class="res-field">
+                      <span class="res-field-label">Return Time</span>
+                      <input type="time" id="wizReturnTime" value="10:00" required>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top:auto; padding-top:8px; text-align:right;">
+                  <button class="btn-res-next" onclick="goStep(2)">
+                    Search for Car <i class="fa-solid fa-chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Right: Interactive Map -->
+            <div class="res-step1-map">
+              <div id="resMap"></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ------------------------------------------
+             STEP 2: Search for Car
+             ------------------------------------------ -->
+        <div class="res-panel" id="resPanel2">
+          <div class="res-tab-header">Search for Car</div>
+          <div class="res-card">
+
+            <!-- Refine filters -->
+            <div class="res-refine-bar">
+              <div class="res-refine-group">
+                <label>Number of Seats</label>
+                <select id="filterSeats">
+                  <option>1</option><option>2</option><option>4</option><option>5</option><option>7</option>
+                </select>
+              </div>
+              <div class="res-refine-group">
+                <label>Number of Bags</label>
+                <select id="filterBags">
+                  <option>1</option><option>2</option><option>3</option><option>4</option>
+                </select>
+              </div>
+              <div class="res-refine-group">
+                <label>Vehicle Type</label>
+                <select id="filterType">
+                  <option>- All vehicles -</option>
+                  <option>Economy Sedan</option>
+                  <option>Compact SUV</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Car: Proton Persona -->
+            <div class="res-car-row" id="carRowPersona">
+              <div class="res-car-img">
+                <img src="assets/images/proton-persona.png" alt="Proton Persona 1.6">
+              </div>
+              <div class="res-car-info">
+                <p class="res-car-name">Proton Persona 1.6 <span>or similar</span></p>
+                <div class="res-car-specs">
+                  <span class="spec"><i class="fa-solid fa-users"></i> 5</span>
+                  <span class="spec"><i class="fa-solid fa-suitcase"></i> 3</span>
+                  <span class="spec"><i class="fa-solid fa-gears"></i> AT</span>
+                  <span class="spec"><i class="fa-solid fa-gas-pump"></i> Petrol</span>
+                </div>
+              </div>
+              <div class="res-car-price">
+                <div class="total" id="personaTotal">RM 145.26</div>
+                <span class="per-day" id="personaDayRate">RM 145.26 / day</span>
+                <button class="btn-select" onclick="selectCar('persona')">SELECT</button>
+              </div>
+            </div>
+
+            <!-- Car: Mitsubishi Xpander -->
+            <div class="res-car-row" id="carRowXpander">
+              <div class="res-car-img">
+                <img src="assets/images/mitsubishi-xpander.png" alt="Mitsubishi Xpander">
+              </div>
+              <div class="res-car-info">
+                <p class="res-car-name">Mitsubishi Xpander <span>or similar</span></p>
+                <div class="res-car-specs">
+                  <span class="spec"><i class="fa-solid fa-users"></i> 7</span>
+                  <span class="spec"><i class="fa-solid fa-suitcase"></i> 4</span>
+                  <span class="spec"><i class="fa-solid fa-gears"></i> AT</span>
+                  <span class="spec"><i class="fa-solid fa-gas-pump"></i> Petrol</span>
+                </div>
+              </div>
+              <div class="res-car-price">
+                <div class="total" id="xpanderTotal">RM 194.33</div>
+                <span class="per-day" id="xpanderDayRate">RM 194.33 / day</span>
+                <button class="btn-select" onclick="selectCar('xpander')">SELECT</button>
+              </div>
+            </div>
+
+            <!-- Add-on Options -->
+            <div class="res-addon-title">Add-on options</div>
+
+            <div class="res-addon-row">
+              <div class="res-addon-info">
+                <div class="res-addon-name">Additional Driver</div>
+                <div class="res-addon-price">RM10.60 per rental</div>
+              </div>
+              <div class="addon-qty">
+                <label>Number</label>
+                <select id="addonDriver" onchange="if(addonDriver) updateTotal()">
+                  <option value="0">0</option>
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                </select>
+              </div>
+              <button class="btn-select" id="addonDriverBtn" onclick="toggleAddon('driver')">SELECT</button>
+            </div>
+
+            <div class="res-addon-row">
+              <div class="res-addon-info">
+                <div class="res-addon-name">Child Seat</div>
+                <div class="res-addon-price">RM10.60 each per day</div>
+              </div>
+              <div class="addon-qty">
+                <label>Number</label>
+                <select id="addonSeat" onchange="if(addonSeat) updateTotal()">
+                  <option value="0">0</option>
+                  <option value="1" selected>1</option>
+                  <option value="2">2</option>
+                </select>
+              </div>
+              <button class="btn-select" id="addonSeatBtn" onclick="toggleAddon('seat')">SELECT</button>
+            </div>
+
+            <div class="res-nav">
+              <button class="btn-res-prev" onclick="goStep(1)">
+                <i class="fa-solid fa-chevron-left"></i> Date &amp; Location
+              </button>
+              <button class="btn-res-next" onclick="goStep(3)">
+                Driver Details <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ------------------------------------------
+             STEP 3: Driver Details
+             ------------------------------------------ -->
+        <div class="res-panel" id="resPanel3">
+          <div class="res-tab-header">Driver Details</div>
+          <div class="res-card" style="margin-bottom:12px;">
+            <div class="res-form-grid-2">
+              <div class="res-form-group">
+                <label>First Name *</label>
+                <input type="text" id="driverFirst" placeholder="First name" required>
+              </div>
+              <div class="res-form-group">
+                <label>Last Name *</label>
+                <input type="text" id="driverLast" placeholder="Last name" required>
+              </div>
+            </div>
+            <div class="res-form-grid-2">
+              <div class="res-form-group">
+                <label>E-Mail Address *</label>
+                <input type="email" id="driverEmail" placeholder="email@example.com" required>
+              </div>
+              <div class="res-form-group">
+                <label>Phone Number *</label>
+                <input type="tel" id="driverPhone" placeholder="+60 12-345 6789" required>
+              </div>
+            </div>
+            <div class="res-form-group" style="margin-bottom:16px;">
+              <label>Comments</label>
+              <textarea id="driverComments" rows="3" style="width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px;font-family:inherit;resize:vertical;" placeholder="Any special requests or notes..."></textarea>
+            </div>
+            <div class="res-form-group">
+              <label>Driver's Age *</label>
+              <select class="res-driver-age-select" id="driverAge">
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25" selected>25+</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Billing Details (collapsible grid matching reference) -->
+          <div class="billing-toggle-wrapper">
+            <button type="button" class="billing-tab-btn active" id="billingTabBtn" onclick="toggleBilling()">
+              <span class="billing-checkbox" id="billingCheck"><i class="fa-solid fa-check"></i></span>
+              <span class="billing-tab-text">BILLING DETAILS</span>
+            </button>
+          </div>
+          <div class="billing-grid-card" id="billingSection">
+            <!-- Row 1: 2 columns -->
+            <div class="billing-row billing-row-2">
+              <div class="billing-cell">
+                <label class="billing-label">COMPANY REGISTERED NAME</label>
+                <input type="text" class="billing-input" id="billCompany" placeholder="Company name (if applicable)">
+              </div>
+              <div class="billing-cell">
+                <label class="billing-label">TAX NUMBER</label>
+                <input type="text" class="billing-input" id="billTax" placeholder="Tax / SST number">
+              </div>
+            </div>
+
+            <!-- Row 2: 3 columns -->
+            <div class="billing-row billing-row-3">
+              <div class="billing-cell">
+                <label class="billing-label">STREET *</label>
+                <input type="text" class="billing-input" id="billStreet" placeholder="Street address">
+              </div>
+              <div class="billing-cell">
+                <label class="billing-label">STREET NUMBER</label>
+                <input type="text" class="billing-input" id="billStreetNum" placeholder="Street number">
+              </div>
+              <div class="billing-cell">
+                <label class="billing-label">CITY *</label>
+                <input type="text" class="billing-input" id="billCity" placeholder="City">
+              </div>
+            </div>
+
+            <!-- Row 3: 3 columns -->
+            <div class="billing-row billing-row-3">
+              <div class="billing-cell">
+                <label class="billing-label">STATE *</label>
+                <input type="text" class="billing-input" id="billState" placeholder="State">
+              </div>
+              <div class="billing-cell">
+                <label class="billing-label">POSTAL CODE *</label>
+                <input type="text" class="billing-input" id="billPostcode" placeholder="Postal code">
+              </div>
+              <div class="billing-cell billing-cell-country" id="countryPickerWrapper" onclick="toggleCountryDropdown(event)">
+                <label class="billing-label">COUNTRY *</label>
+                <div class="country-picker-trigger">
+                  <span id="countrySelectedText">Malaysia</span>
+                  <i class="fa-solid fa-chevron-down" style="font-size:12px;color:#00285F;"></i>
+                </div>
+                <input type="hidden" id="billCountry" value="Malaysia">
+
+                <!-- Searchable Dropdown Popup -->
+                <div class="country-dropdown-menu" id="countryDropdownMenu" style="display:none;" onclick="event.stopPropagation()">
+                  <div class="country-search-box">
+                    <i class="fa-solid fa-magnifying-glass country-search-icon"></i>
+                    <input type="text" id="countrySearchInput" class="country-search-input" placeholder="Type to search country..." oninput="filterCountries()">
+                    <button type="button" class="country-search-clear" id="countrySearchClear" onclick="clearCountrySearch()" style="display:none;">&times;</button>
+                  </div>
+                  <div class="country-list" id="countryList"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Method -->
+          <div style="margin-top:24px;">
+            <h3 style="font-size:16px;font-weight:700;color:#00285F;margin-bottom:12px;">Payment Method</h3>
+            <div class="res-payment-box selected" id="paymentMethodBox" onclick="togglePaymentMethod()">
+              Credit Card on Pickup
+              <div class="res-payment-badge">
+                <i class="fa-solid fa-check"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="res-nav">
+            <button class="btn-res-prev" onclick="goStep(2)">
+              <i class="fa-solid fa-chevron-left"></i> Search for Car
+            </button>
+            <button class="btn-res-next" onclick="goStep(4)">
+              Booking Summary <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- ------------------------------------------
+             STEP 4: Booking Summary
+             ------------------------------------------ -->
+        <div class="res-panel" id="resPanel4">
+          <div class="res-tab-header">Booking Summary</div>
+          <div class="res-card">
+
+            <!-- 2-column summary -->
+            <div class="res-summary-grid">
+              <!-- Booking details box -->
+              <div class="res-summary-box">
+                <div class="res-summary-box-header">Booking Details</div>
+                <div class="res-summary-box-body">
+                  <div class="res-booking-row">
+                    <label>Pickup Location</label>
+                    <span id="confPickup">&mdash;</span>
+                  </div>
+                  <div class="res-booking-row">
+                    <label>Pickup Date, Time</label>
+                    <span id="confPickupDT">&mdash;</span>
+                  </div>
+                  <div class="res-booking-row">
+                    <label>Return Location</label>
+                    <span id="confReturn">&mdash;</span>
+                  </div>
+                  <div class="res-booking-row">
+                    <label>Return Date, Time</label>
+                    <span id="confReturnDT">&mdash;</span>
+                  </div>
+                  <div class="res-booking-row">
+                    <label>Rental Period</label>
+                    <span id="confDays">&mdash;</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Combined Vehicle & Driver Details box -->
+              <div class="res-summary-box">
+                <div class="res-summary-box-header">
+                  <span>Vehicle &amp; Driver Details</span>
+                  <div style="display:flex;gap:6px;">
+                    <button class="edit-btn" onclick="goStep(2)" title="Change vehicle">Change Car</button>
+                    <button class="edit-btn" onclick="goStep(3)" title="Edit driver details">Edit Driver</button>
+                  </div>
+                </div>
+                <div class="res-summary-box-body" style="padding:16px;">
+                  <!-- Vehicle Section with Criteria -->
+                  <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:14px;width:100%;">
+                    <div style="width:100%;display:flex;justify-content:center;align-items:center;margin-bottom:8px;">
+                      <img id="confCarImg" src="assets/images/proton-persona.png" alt="Vehicle" style="display:block;margin:0 auto;max-height:85px;max-width:200px;object-fit:contain;">
+                    </div>
+                    <div id="confCarName" style="font-weight:700;font-size:15px;color:#00285F;text-align:center;">Proton Persona 1.6</div>
+                    <div class="res-car-specs" style="justify-content:center;margin-top:8px;gap:12px;">
+                      <span class="spec" id="confSpecSeats"><i class="fa-solid fa-users"></i> 5 Seats</span>
+                      <span class="spec" id="confSpecBags"><i class="fa-solid fa-suitcase"></i> 3 Bags</span>
+                      <span class="spec" id="confSpecTrans"><i class="fa-solid fa-gears"></i> AT</span>
+                      <span class="spec" id="confSpecFuel"><i class="fa-solid fa-gas-pump"></i> Petrol</span>
+                    </div>
+                  </div>
+
+                  <!-- Driver Section -->
+                  <div style="border-top:1px solid #e2e8f0;padding-top:12px;">
+                    <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#94a3b8;margin-bottom:6px;">
+                      Assigned Driver
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:4px;font-size:13px;">
+                      <div><i class="fa-solid fa-user" style="color:#00285F;width:16px;margin-right:6px;"></i><b id="confDriverName" style="color:#1e293b;">&mdash;</b></div>
+                      <div><i class="fa-solid fa-envelope" style="color:#00285F;width:16px;margin-right:6px;"></i><span id="confDriverEmail" style="color:#475569;">&mdash;</span></div>
+                      <div><i class="fa-solid fa-phone" style="color:#00285F;width:16px;margin-right:6px;"></i><span id="confDriverPhone" style="color:#475569;">&mdash;</span></div>
+                      <div><i class="fa-solid fa-id-card" style="color:#00285F;width:16px;margin-right:6px;"></i><span id="confDriverAge" style="color:#475569;">Age: 25+</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Discount code + Price -->
+            <div class="res-price-summary">
+              <p style="font-size:12px;color:#94a3b8;margin-bottom:6px;">Do you have a discount code?</p>
+              <div class="res-discount-box">
+                <input type="text" id="discountCode" placeholder="Enter discount code">
+                <button class="btn-apply">Apply Code</button>
+              </div>
+              <div class="res-price-row">
+                <span>Selected vehicle</span>
+                <span id="confVehiclePrice">RM 0</span>
+              </div>
+              <div class="res-price-row">
+                <span>Tax (6% SST)</span>
+                <span id="confTax">RM 0</span>
+              </div>
+              <div class="res-price-row total">
+                <span>Total</span>
+                <span id="confTotal">RM 0</span>
+              </div>
+            </div>
+
+            <div class="res-nav">
+              <button class="btn-res-prev" onclick="goStep(3)">
+                <i class="fa-solid fa-chevron-left"></i> Driver Details
+              </button>
+              <button class="btn-res-next book" onclick="confirmBooking()">
+                Book Now <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /res-main -->
+    </div><!-- /res-wrap -->
+
+  </main>
+
+  <!-- -- Confirmation Modal ------------------------ -->
+  <div class="res-modal-overlay" id="confirmModal">
+    <div class="res-modal">
+      <div class="conf-icon"><i class="fa-solid fa-circle-check"></i></div>
+      <h3>Reservation Confirmed!</h3>
+      <p>Your car has been reserved under Budget Malaysia priority allocation. A confirmation copy has been generated.</p>
+      <div class="conf-ref">
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">BOOKING REFERENCE</div>
+        <div class="ref-num" id="confRefNum">BM-000000</div>
+        <div style="margin-top:10px;font-size:12px;color:#475569;">
+          <div>Renter: <strong id="confRefName">&mdash;</strong></div>
+          <div>Email: <strong id="confRefEmail">&mdash;</strong></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button class="btn-res-prev" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Voucher</button>
+        <a class="btn-res-next" href="index.html">Return to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       Footer
+       ====================================================================== -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="index.html" aria-label="Budget Malaysia Home">
+            <img src="assets/images/budget-logo-navy.png" alt="Budget Car Rental" class="brand-logo-img">
+          </a>
+          <p>DRB-HICOM EZ-Drive Sdn. Bhd. | Company No.:197201001192 (12799-K)</p>
+          <div class="footer-contact-info">
+            <div><i class="fa-solid fa-building"></i> Level 2, EON Head Office Complex, No 2, Persiaran Kerjaya, Glenmarie Industrial Park, Section U1, 40150 Shah Alam, Selangor Darul Ehsan</div>
+            <div><i class="fa-solid fa-phone"></i> Central Reservations: <a href="tel:+60378031122">+603-7803 1122</a></div>
+            <div><i class="fa-solid fa-envelope"></i> Email: <a href="mailto:glenmarie@budgetmalaysia.com.my">glenmarie@budgetmalaysia.com.my</a></div>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <div class="footer-links">
+            <a href="terms.html">Terms &amp; Condition</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="faq.html">Frequently Asked Questions (FAQ)</a>
+            <a href="contact.html">Contact Us</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Promotions &amp; Updates</h4>
+          <p style="font-size:12px;color:#CBD5E1;margin-bottom:12px;">Subscribe to receive exclusive weekend promo codes and holiday deals:</p>
+          <form class="newsletter-box" onsubmit="event.preventDefault(); showToast('Thank you for subscribing to Budget Malaysia!');">
+            <input type="email" placeholder="Your email address" required>
+            <button type="submit">Join</button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-disclaimer">&copy; <span id="year"></span> Budget Malaysia (DRB-HICOM EZ-Drive Sdn. Bhd.).</p>
+        <div style="display:flex;gap:16px;font-size:12px;">
+          <a href="privacy.html" style="color:#CBD5E1;">Privacy Policy</a>
+          <a href="terms.html" style="color:#CBD5E1;">Rental Terms</a>
+          <a href="#" style="color:#CBD5E1;">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="assets/js/app.js?v=4.2"></script>
+  <script>
+    /* -- Reservation Wizard JS ----------------------- */
+    const RATES = { persona: 145.26, xpander: 194.33 };
+    let selectedCar = null;
+    let rentalDays = 1;
+    let addonDriver = false;
+    let addonSeat = false;
+
+    // Set min date to today
+    const today = new Date().toISOString().split('T')[0];
+    const puDateEl = document.getElementById('wizPickupDate');
+    const rdDateEl = document.getElementById('wizReturnDate');
+    if (puDateEl) puDateEl.min = today;
+    if (rdDateEl) rdDateEl.min = today;
+
+    function goStep(n) {
+      // Validate step 1
+      if (n >= 2) {
+        const pu = document.getElementById('wizPickup').value;
+        const pd = document.getElementById('wizPickupDate').value;
+        const rd = document.getElementById('wizReturnDate').value;
+        if (!pu || !pd || !rd) { alert('Please fill in all pick-up details before continuing.'); return; }
+        if (rd < pd) { alert('Return date cannot be before pick-up date.'); return; }
+        rentalDays = Math.max(1, Math.round((new Date(rd) - new Date(pd)) / 86400000));
+        updateSidebar();
+        updateCarPrices();
+      }
+      // Validate step 2
+      if (n >= 3) {
+        if (!selectedCar) { alert('Please select a vehicle before continuing.'); return; }
+        const sbRow = document.getElementById('sbVehicleRow');
+        if (sbRow) sbRow.style.display = '';
+      }
+      // Validate step 3
+      if (n >= 4) {
+        const fn = document.getElementById('driverFirst').value;
+        const ln = document.getElementById('driverLast').value;
+        const em = document.getElementById('driverEmail').value;
+        const ph = document.getElementById('driverPhone').value;
+        if (!fn || !ln || !em || !ph) { alert('Please fill in all required driver details.'); return; }
+        updateSummary();
+      }
+
+      // Toggle left sidebar for steps 2 & 3
+      const wrapEl = document.querySelector('.res-wrap');
+      const sbEl = document.getElementById('resSidebar');
+      if (sbEl && wrapEl) {
+        if (n === 2 || n === 3) {
+          sbEl.style.display = 'block';
+          wrapEl.classList.add('has-sidebar');
+        } else {
+          sbEl.style.display = 'none';
+          wrapEl.classList.remove('has-sidebar');
+        }
+      }
+
+      // Update panels
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('resPanel' + i).classList.toggle('active', i === n);
+        const stepEl = document.getElementById('resStep' + i);
+        stepEl.classList.remove('active', 'done');
+        if (i === n) stepEl.classList.add('active');
+        else if (i < n) stepEl.classList.add('done');
+
+        // Update step number icon for done steps
+        const numEl = stepEl.querySelector('.res-step-num');
+        if (i < n) numEl.innerHTML = '<i class="fa-solid fa-check" style="font-size:11px;"></i>';
+        else numEl.textContent = i;
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateSidebar() {
+      const pu = document.getElementById('wizPickup').value || '&mdash;';
+      const re = document.getElementById('wizReturn').value || pu;
+      const pd = document.getElementById('wizPickupDate').value;
+      const pt = document.getElementById('wizPickupTime').value;
+      const rd = document.getElementById('wizReturnDate').value;
+      const rt = document.getElementById('wizReturnTime').value;
+
+      document.getElementById('sbPickup').textContent = pu;
+      document.getElementById('sbReturn').textContent = re || pu;
+      document.getElementById('sbPickupDT').textContent = pd && pt ? pd + ', ' + pt : '&mdash;';
+      document.getElementById('sbReturnDT').textContent = rd && rt ? rd + ', ' + rt : '&mdash;';
+      document.getElementById('sbDays').textContent = rentalDays + (rentalDays === 1 ? ' day' : ' days');
+      updateTotal();
+    }
+
+    function updateCarPrices() {
+      const pTotal = 145.26 * rentalDays;
+      const xTotal = 194.33 * rentalDays;
+      document.getElementById('personaDayRate').textContent = 'RM 145.26 / day';
+      document.getElementById('personaTotal').textContent = 'RM ' + pTotal.toFixed(2);
+      document.getElementById('xpanderDayRate').textContent = 'RM 194.33 / day';
+      document.getElementById('xpanderTotal').textContent = 'RM ' + xTotal.toFixed(2);
+    }
+
+    function selectCar(car) {
+      if (selectedCar === car) {
+        selectedCar = null;
+      } else {
+        selectedCar = car;
+      }
+      const isPersona = selectedCar === 'persona';
+      const isXpander = selectedCar === 'xpander';
+
+      document.getElementById('carRowPersona').classList.toggle('selected', isPersona);
+      document.getElementById('carRowXpander').classList.toggle('selected', isXpander);
+
+      const pBtn = document.querySelector('#carRowPersona .btn-select');
+      const xBtn = document.querySelector('#carRowXpander .btn-select');
+      if (pBtn) {
+        pBtn.innerHTML = isPersona ? 'SELECT &#10003;' : 'SELECT';
+        pBtn.classList.toggle('active', isPersona);
+      }
+      if (xBtn) {
+        xBtn.innerHTML = isXpander ? 'SELECT &#10003;' : 'SELECT';
+        xBtn.classList.toggle('active', isXpander);
+      }
+
+      const sbVeh = document.getElementById('sbVehicle');
+      if (sbVeh) {
+        if (selectedCar === 'persona') sbVeh.textContent = 'Proton Persona 1.6';
+        else if (selectedCar === 'xpander') sbVeh.textContent = 'Mitsubishi Xpander';
+        else sbVeh.textContent = 'Selected vehicle';
+      }
+      updateTotal();
+    }
+
+    function toggleAddon(type) {
+      if (type === 'driver') {
+        addonDriver = !addonDriver;
+        const btn = document.getElementById('addonDriverBtn');
+        if (btn) {
+          btn.classList.toggle('active', addonDriver);
+          btn.innerHTML = addonDriver ? 'SELECT &#10003;' : 'SELECT';
+        }
+      } else {
+        addonSeat = !addonSeat;
+        const btn = document.getElementById('addonSeatBtn');
+        if (btn) {
+          btn.classList.toggle('active', addonSeat);
+          btn.innerHTML = addonSeat ? 'SELECT &#10003;' : 'SELECT';
+        }
+      }
+      updateTotal();
+    }
+
+    let billingOpen = true;
+    function toggleBilling() {
+      billingOpen = !billingOpen;
+      const sec = document.getElementById('billingSection');
+      const btn = document.getElementById('billingTabBtn');
+      if (sec) sec.style.display = billingOpen ? 'block' : 'none';
+      if (btn) btn.classList.toggle('active', billingOpen);
+    }
+
+    function updateTotal() {
+      let vehicleBase = 0;
+      let vehicleTax = 0;
+      let vehicleTotal = 0;
+
+      if (selectedCar === 'persona') {
+        // Total RM 145.26/day with 6% tax included: RM 137.04 vehicle + RM 8.22 tax
+        vehicleBase = 137.04 * rentalDays;
+        vehicleTax = 8.22 * rentalDays;
+        vehicleTotal = 145.26 * rentalDays;
+      } else if (selectedCar === 'xpander') {
+        // Total RM 194.33/day with 6% tax included: RM 183.33 vehicle + RM 11.00 tax
+        vehicleBase = 183.33 * rentalDays;
+        vehicleTax = 11.00 * rentalDays;
+        vehicleTotal = 194.33 * rentalDays;
+      }
+
+      let addonBase = 0;
+      if (addonDriver) {
+        const qty = parseInt(document.getElementById('addonDriver')?.value || '1') || 1;
+        addonBase += 10.00 * qty;
+      }
+      if (addonSeat) {
+        const qty = parseInt(document.getElementById('addonSeat')?.value || '1') || 1;
+        addonBase += 10.00 * qty * rentalDays;
+      }
+
+      let addonTax = Math.round(addonBase * 0.06 * 100) / 100;
+      let totalTax = vehicleTax + addonTax;
+      let total = vehicleTotal + (addonBase + addonTax);
+
+      const sbVehEl = document.getElementById('sbVehiclePrice');
+      if (sbVehEl) sbVehEl.textContent = 'RM ' + vehicleBase.toFixed(2);
+      const sbTaxEl = document.getElementById('sbTaxPrice');
+      if (sbTaxEl) sbTaxEl.textContent = 'RM ' + totalTax.toFixed(2);
+      const sbTotEl = document.getElementById('sbTotal');
+      if (sbTotEl) sbTotEl.textContent = 'RM ' + total.toFixed(2);
+
+      return { base: vehicleBase, tax: totalTax, total: total };
+    }
+
+    function updateSummary() {
+      const fn = document.getElementById('driverFirst').value;
+      const ln = document.getElementById('driverLast').value;
+      const em = document.getElementById('driverEmail').value;
+      const ph = document.getElementById('driverPhone').value;
+      document.getElementById('confDriverName').textContent = fn + ' ' + ln;
+      document.getElementById('confDriverEmail').textContent = em;
+      document.getElementById('confDriverPhone').textContent = ph;
+
+      const age = document.getElementById('driverAge')?.value || '25+';
+      const ageEl = document.getElementById('confDriverAge');
+      if (ageEl) ageEl.textContent = 'Age: ' + age;
+
+      document.getElementById('confPickup').textContent = document.getElementById('wizPickup').value || '&mdash;';
+      const ret = document.getElementById('wizReturn').value;
+      document.getElementById('confReturn').textContent = ret || document.getElementById('wizPickup').value || '&mdash;';
+      document.getElementById('confPickupDT').textContent = document.getElementById('wizPickupDate').value + ', ' + document.getElementById('wizPickupTime').value;
+      document.getElementById('confReturnDT').textContent = document.getElementById('wizReturnDate').value + ', ' + document.getElementById('wizReturnTime').value;
+      document.getElementById('confDays').textContent = rentalDays + (rentalDays === 1 ? ' day' : ' days');
+
+      const carName = selectedCar === 'persona' ? 'Proton Persona 1.6' : (selectedCar === 'xpander' ? 'Mitsubishi Xpander' : '&mdash;');
+      const carImg = selectedCar === 'persona' ? 'assets/images/proton-persona.png' : 'assets/images/mitsubishi-xpander.png';
+      document.getElementById('confCarName').textContent = carName;
+      document.getElementById('confCarImg').src = carImg;
+
+      // Update car criteria
+      const seatsEl = document.getElementById('confSpecSeats');
+      const bagsEl = document.getElementById('confSpecBags');
+      const transEl = document.getElementById('confSpecTrans');
+      const fuelEl = document.getElementById('confSpecFuel');
+      if (seatsEl && bagsEl && transEl && fuelEl) {
+        if (selectedCar === 'xpander') {
+          seatsEl.innerHTML = '<i class="fa-solid fa-users"></i> 7 Seats';
+          bagsEl.innerHTML = '<i class="fa-solid fa-suitcase"></i> 4 Bags';
+          transEl.innerHTML = '<i class="fa-solid fa-gears"></i> AT';
+          fuelEl.innerHTML = '<i class="fa-solid fa-gas-pump"></i> Petrol';
+        } else {
+          seatsEl.innerHTML = '<i class="fa-solid fa-users"></i> 5 Seats';
+          bagsEl.innerHTML = '<i class="fa-solid fa-suitcase"></i> 3 Bags';
+          transEl.innerHTML = '<i class="fa-solid fa-gears"></i> AT';
+          fuelEl.innerHTML = '<i class="fa-solid fa-gas-pump"></i> Petrol';
+        }
+      }
+
+      const { base, tax, total } = updateTotal();
+      document.getElementById('confVehiclePrice').textContent = 'RM ' + base.toFixed(2);
+      document.getElementById('confTax').textContent = 'RM ' + tax.toFixed(2);
+      document.getElementById('confTotal').textContent = 'RM ' + total.toFixed(2);
+    }
+
+    function confirmBooking() {
+      const ref = 'BM-' + Math.floor(100000 + Math.random() * 900000);
+      document.getElementById('confRefNum').textContent = ref;
+      document.getElementById('confRefName').textContent =
+        (document.getElementById('driverFirst').value + ' ' + document.getElementById('driverLast').value).trim() || '&mdash;';
+      document.getElementById('confRefEmail').textContent = document.getElementById('driverEmail').value || '&mdash;';
+      document.getElementById('confirmModal').classList.add('open');
+    }
+
+    // Close modal on background click
+    document.getElementById('confirmModal').addEventListener('click', function(e) {
+      if (e.target === this) this.classList.remove('open');
+    });
+
+    // Payment Method toggle
+    let paymentSelected = true;
+    function togglePaymentMethod() {
+      paymentSelected = !paymentSelected;
+      const box = document.getElementById('paymentMethodBox');
+      if (box) box.classList.toggle('selected', paymentSelected);
+    }
+
+    // Searchable Country Dropdown
+    const ALL_COUNTRIES = [
+      "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
+      "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi",
+      "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Democratic Republic of the", "Congo, Republic of the", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+      "Denmark", "Djibouti", "Dominica", "Dominican Republic",
+      "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
+      "Fiji", "Finland", "France",
+      "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana",
+      "Haiti", "Honduras", "Hong Kong", "Hungary",
+      "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy",
+      "Jamaica", "Japan", "Jordan",
+      "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan",
+      "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
+      "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar",
+      "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway",
+      "Oman",
+      "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
+      "Qatar",
+      "Romania", "Russia", "Rwanda",
+      "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
+      "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu",
+      "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan",
+      "Vanuatu", "Vatican City", "Venezuela", "Vietnam",
+      "Yemen",
+      "Zambia", "Zimbabwe"
+    ];
+
+    function renderCountryList(filterQuery = '') {
+      const listEl = document.getElementById('countryList');
+      if (!listEl) return;
+      const q = filterQuery.toLowerCase().trim();
+      const filtered = ALL_COUNTRIES.filter(c => c.toLowerCase().includes(q));
+      const current = document.getElementById('billCountry')?.value || 'Malaysia';
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<div class="country-no-match">No country found</div>';
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(c => {
+        const isSel = c === current;
+        const safeName = c.replace(/'/g, "\\'");
+        return `<div class="country-item ${isSel ? 'selected' : ''}" onclick="selectCountry('${safeName}')">${c}</div>`;
+      }).join('');
+    }
+
+    function selectCountry(country) {
+      const hiddenInput = document.getElementById('billCountry');
+      const displayText = document.getElementById('countrySelectedText');
+      if (hiddenInput) hiddenInput.value = country;
+      if (displayText) displayText.textContent = country;
+      closeCountryDropdown();
+    }
+
+    function toggleCountryDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('countryDropdownMenu');
+      if (!menu) return;
+      const isHidden = menu.style.display === 'none';
+      if (isHidden) {
+        menu.style.display = 'block';
+        renderCountryList();
+        const searchInput = document.getElementById('countrySearchInput');
+        if (searchInput) {
+          searchInput.value = '';
+          const clearBtn = document.getElementById('countrySearchClear');
+          if (clearBtn) clearBtn.style.display = 'none';
+          setTimeout(() => searchInput.focus(), 60);
+        }
+      } else {
+        menu.style.display = 'none';
+      }
+    }
+
+    function closeCountryDropdown() {
+      const menu = document.getElementById('countryDropdownMenu');
+      if (menu) menu.style.display = 'none';
+    }
+
+    function filterCountries() {
+      const q = document.getElementById('countrySearchInput')?.value || '';
+      const clearBtn = document.getElementById('countrySearchClear');
+      if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+      renderCountryList(q);
+    }
+
+    function clearCountrySearch() {
+      const searchInput = document.getElementById('countrySearchInput');
+      if (searchInput) {
+        searchInput.value = '';
+        searchInput.focus();
+      }
+      const clearBtn = document.getElementById('countrySearchClear');
+      if (clearBtn) clearBtn.style.display = 'none';
+      renderCountryList('');
+    }
+
+    // Close country dropdown on click outside
+    document.addEventListener('click', function(e) {
+      const wrapper = document.getElementById('countryPickerWrapper');
+      if (wrapper && !wrapper.contains(e.target)) {
+        closeCountryDropdown();
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeCountryDropdown();
+    });
+
+
+    // Initialize Reservation Map (Step 1)
+    (function() {
+      var RES_STATIONS = [
+        { name: 'Glenmarie, Shah Alam (TE5)', lat: 3.1073, lng: 101.5945 },
+        { name: 'Kuala Lumpur International Airport Terminal 1 (KLIA T1)', lat: 2.7456, lng: 101.7099 },
+        { name: 'Kuala Lumpur International Airport Terminal 2 (KLIA T2)', lat: 2.7406, lng: 101.7004 },
+        { name: 'Kuala Lumpur Downtown (KU4)', lat: 3.1480, lng: 101.6878 },
+        { name: 'Penang International Airport (PEN)', lat: 5.2970, lng: 100.2767 },
+        { name: 'Senai International Airport (JHB)', lat: 1.6412, lng: 103.6697 },
+        { name: 'Johor Bahru Downtown (JH2)', lat: 1.4655, lng: 103.7578 },
+        { name: 'Melaka Downtown (M8Y)', lat: 2.1896, lng: 102.2501 },
+        { name: 'Kuantan Airport (KUA)', lat: 3.7753, lng: 103.2092 },
+        { name: 'Kota Bharu Airport (KBR)', lat: 6.1685, lng: 102.2933 },
+        { name: 'Kota Kinabalu International Airport (SG1)', lat: 5.9365, lng: 116.0511 },
+        { name: 'Sandakan Airport (SDK)', lat: 5.9009, lng: 118.0589 },
+        { name: 'Tawau Airport (TWA)', lat: 4.3202, lng: 118.1278 },
+        { name: 'Kuching International Airport (KCH)', lat: 1.4847, lng: 110.3469 },
+        { name: 'Miri Airport (MRR)', lat: 4.3221, lng: 114.0085 },
+        { name: 'Bintulu Airport (BTL)', lat: 3.1234, lng: 113.0197 },
+        { name: 'Sibu Airport (SBW)', lat: 2.2616, lng: 111.9853 }
+      ];
+
+      var mapEl = document.getElementById('resMap');
+      if (!mapEl) return;
+
+      var map = L.map('resMap', {
+        center: [3.2, 109.2],
+        zoom: 5,
+        scrollWheelZoom: true,
+        zoomControl: true
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap</a>'
+      }).addTo(map);
+
+      var markerMap = {};
+
+      RES_STATIONS.forEach(function(s, idx) {
+        var num = idx + 1;
+        var icon = L.divIcon({
+          className: 'res-map-pin',
+          html: '<div style=\"width:34px;height:34px;background:#00285F;border:3px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,0.3);cursor:pointer;transition:transform 0.2s;\">' + num + '</div>',
+          iconSize: [34, 34],
+          iconAnchor: [17, 17]
+        });
+
+        var marker = L.marker([s.lat, s.lng], { icon: icon }).addTo(map);
+        var isAirport = s.name.indexOf('Airport') > -1;
+        var typeLabel = isAirport ? 'Airport Station' : 'Downtown Station';
+        var typeIcon = isAirport ? 'fa-plane-departure' : 'fa-building';
+
+        marker.bindPopup(
+          '<div class=\"res-popup-card\" style=\"padding:16px 18px;width:295px;box-sizing:border-box;display:flex;flex-direction:column;\">' +
+            '<div class=\"res-popup-name\" style=\"font-weight:700;font-size:15px;color:#00285F;margin:0 0 6px 0;padding-right:22px;line-height:1.35;\">' + s.name + '</div>' +
+            '<div class=\"res-popup-type\" style=\"font-size:12px;font-weight:600;color:#64748b;margin:0 0 14px 0;display:flex;align-items:center;gap:6px;line-height:1;\"><i class=\"fa-solid ' + typeIcon + '\" style=\"color:#ED5505;font-size:12px;\"></i> ' + typeLabel + '</div>' +
+            '<div class=\"res-popup-btn-row\" style=\"display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0;\">' +
+              '<button class=\"res-popup-btn\" style=\"display:inline-flex;align-items:center;justify-content:center;text-align:center;background:#00285F;color:#ffffff;font-size:11.5px;font-weight:700;padding:9px 4px;border-radius:6px;cursor:pointer;border:none;font-family:inherit;letter-spacing:0.02em;white-space:nowrap;box-shadow:0 2px 6px rgba(0,40,95,0.2);box-sizing:border-box;margin:0;\" onclick=\"document.getElementById(\x27wizPickup\x27).value=\x27' + s.name + '\x27;\">Select as Pickup</button>' +
+              '<button class=\"res-popup-btn btn-return\" style=\"display:inline-flex;align-items:center;justify-content:center;text-align:center;background:#00285F;color:#ffffff;font-size:11.5px;font-weight:700;padding:9px 4px;border-radius:6px;cursor:pointer;border:none;font-family:inherit;letter-spacing:0.02em;white-space:nowrap;box-shadow:0 2px 6px rgba(0,40,95,0.2);box-sizing:border-box;margin:0;\" onclick=\"document.getElementById(\x27wizReturn\x27).value=\x27' + s.name + '\x27;\">Select for Return</button>' +
+            '</div>' +
+          '</div>',
+          { closeButton: true, maxWidth: 340 }
+        );
+
+        // Marker click only opens popup, does not change pickup
+
+        markerMap[s.name] = { marker: marker, lat: s.lat, lng: s.lng };
+      });
+
+      // When user selects a station from the dropdown, zoom to it on the map
+      document.getElementById('wizPickup').addEventListener('change', function() {
+        var val = this.value;
+        if (markerMap[val]) {
+          map.flyTo([markerMap[val].lat, markerMap[val].lng], 12, { duration: 0.8 });
+          markerMap[val].marker.openPopup();
+        } else {
+          map.flyTo([3.2, 109.2], 5, { duration: 0.8 });
+        }
+      });
+
+      // Fix map rendering after page load
+      setTimeout(function() { map.invalidateSize(); }, 300);
+      setTimeout(function() { map.invalidateSize(); }, 800);
+
+      // Re-invalidate whenever step 1 becomes active
+      var origGoStep = window.goStep;
+      window.goStep = function(n) {
+        origGoStep(n);
+        if (n === 1) {
+          setTimeout(function() { map.invalidateSize(); }, 200);
+          setTimeout(function() { map.invalidateSize(); }, 600);
+        }
+      };
+    })();
+  </script>
+</body>
+</html>

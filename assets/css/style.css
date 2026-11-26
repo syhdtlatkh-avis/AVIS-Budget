@@ -6137,3 +6137,361 @@ button {
 
     /* intro para justify */
     .section-desc strong { color: #00285F; }
+
+/* ==========================================================================
+   UNIVERSAL GADGET AUTO-FIT & RESPONSIVE ADAPTATION SYSTEM
+   Auto-fits all gadgets: Mobile Phones (320px - 480px), Phablets,
+   Tablets (iPad, Android), Laptops, Desktop Monitors & Ultra-Wide.
+   ========================================================================== */
+
+/* Universal safe box-sizing and overflow prevention */
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Ensure all media formats auto-fit within their parent containers */
+img, svg, video, canvas, audio, iframe, embed, object {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Container safety auto-fit across all screen sizes */
+.wrap, .container, .res-wrap, .contact-wrap, .privacy-wrap, .terms-wrap {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive Table Auto-Fit (Terms & Privacy) */
+.tc-table {
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 640px) {
+  .tc-table {
+    display: block;
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------
+   TABLET & MEDIUM GADGETS (max-width: 992px)
+   -------------------------------------------------- */
+@media (max-width: 992px) {
+  .header-inner {
+    padding: 0 16px;
+  }
+
+  /* Reservation Wizard Sidebar Auto-Fit: Stack cleanly on tablets & phones */
+  .res-wrap.has-sidebar {
+    flex-direction: column-reverse;
+    gap: 24px;
+  }
+
+  .res-sidebar {
+    width: 100% !important;
+    position: static !important;
+    top: auto !important;
+  }
+
+  .res-sidebar-box {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Locations Interactive Map & Cards Grid */
+  .locations-layout {
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+  }
+
+  .map-container-box {
+    min-height: 400px;
+    height: auto;
+    width: 100%;
+  }
+
+  #locationsMap {
+    height: 400px;
+    width: 100%;
+  }
+
+  /* 360 Virtual Showroom Dialog Auto-Fit */
+  .showroom-dialog {
+    width: 96% !important;
+    max-height: 94vh;
+  }
+}
+
+/* --------------------------------------------------
+   MOBILE & SMALL TABLET GADGETS (max-width: 768px)
+   -------------------------------------------------- */
+@media (max-width: 768px) {
+  /* Reservation Wizard Step 1: Form & Map Stack */
+  .res-step1-layout {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+    min-height: auto;
+  }
+
+  .res-step1-map, .res-step1-map #resMap {
+    height: 360px !important;
+    min-height: 360px !important;
+    width: 100%;
+  }
+
+  /* Step Progress Bar with Smooth Touch Scrolling */
+  .res-steps-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .res-steps-inner {
+    min-width: 520px;
+    padding: 0 16px;
+  }
+
+  /* Quick Booking Form Auto-Fit */
+  .widget-form {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+
+  .widget-btn {
+    width: 100%;
+    height: 48px;
+    justify-content: center;
+  }
+
+  /* Fleet Grid & Filter Pills Auto-Fit */
+  .fleet-grid, .offers-grid, .features-grid, .categories-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .filter-pills {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-btn {
+    flex: 1 1 auto;
+    text-align: center;
+    font-size: 12px;
+    padding: 8px 14px;
+  }
+
+  /* Footer Layout */
+  .footer-top {
+    grid-template-columns: 1fr !important;
+    gap: 32px;
+  }
+
+  /* Confirmation Step Grid */
+  .res-summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* --------------------------------------------------
+   SMARTPHONE GADGETS (max-width: 576px)
+   -------------------------------------------------- */
+@media (max-width: 576px) {
+  /* Content padding for small phone screens */
+  .wrap, .res-wrap, .contact-wrap, .privacy-wrap, .terms-wrap {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  /* Responsive typography scaling */
+  .section-title {
+    font-size: 22px !important;
+    line-height: 1.3 !important;
+  }
+
+  .section-desc {
+    font-size: 13px !important;
+  }
+
+  .hero-heading {
+    font-size: 26px !important;
+    line-height: 1.25 !important;
+  }
+
+  .hero-desc {
+    font-size: 13px !important;
+  }
+
+  /* Car Card Footer: Stack price & buttons neatly on phone */
+  .car-footer {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+  }
+
+  .car-footer-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .car-footer-actions .btn,
+  .car-footer-actions a,
+  .car-footer-actions button {
+    width: 100% !important;
+    padding: 10px 8px !important;
+    font-size: 12px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Step 2: Car selection rows stacked vertically on phone */
+  .res-car-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    text-align: center !important;
+    gap: 14px !important;
+    padding: 16px 14px !important;
+  }
+
+  .res-car-img {
+    width: 100% !important;
+    max-width: 180px !important;
+    margin: 0 auto !important;
+  }
+
+  .res-car-img img {
+    height: auto !important;
+    max-height: 100px !important;
+  }
+
+  .res-car-specs {
+    justify-content: center !important;
+    gap: 10px !important;
+  }
+
+  .res-car-price {
+    align-items: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    padding-top: 12px !important;
+    border-top: 1px dashed #e2e8f0 !important;
+  }
+
+  .btn-select {
+    width: 100% !important;
+    padding: 10px 0 !important;
+  }
+
+  /* Step 1: Pick-up and Return Date Row */
+  .res-date-row {
+    grid-template-columns: 1fr !important;
+    padding-left: 0 !important;
+    gap: 10px !important;
+  }
+
+  .res-section-box {
+    padding: 14px 12px !important;
+  }
+
+  /* Step 2: Add-on items */
+  .res-addon-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .res-addon-row .addon-qty {
+    width: 100% !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  .res-addon-row .addon-qty select {
+    width: 90px !important;
+  }
+
+  /* Reservation Navigation Buttons */
+  .res-nav {
+    flex-direction: column-reverse !important;
+    gap: 10px !important;
+  }
+
+  .btn-res-prev, .btn-res-next {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Fleet search analysis card on phone */
+  .search-analysis-container {
+    padding: 16px !important;
+  }
+
+  .analysis-heading {
+    font-size: 16px !important;
+  }
+
+  .analysis-data-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .btn-reset-search {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Contact page */
+  .station-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .contact-banner {
+    padding: 18px 16px !important;
+  }
+}
+
+/* --------------------------------------------------
+   EXTRA-COMPACT GADGETS (max-width: 380px)
+   -------------------------------------------------- */
+@media (max-width: 380px) {
+  .res-steps-inner {
+    min-width: 360px !important;
+  }
+
+  .res-step-label span {
+    display: none !important;
+  }
+
+  .car-footer-actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .showroom-header-tabs {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .showroom-tab {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+}
